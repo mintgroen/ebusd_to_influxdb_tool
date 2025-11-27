@@ -3,14 +3,14 @@ import datetime
 from influxdb import InfluxDBClient
 
 # --- Configuration ---
-DATA_URL = "http://192.168.0.3:8889/data/basv?maxage=60"
+DATA_URL = "http://ebusdeamon-ip-adress:8889/data?maxage=60"
 
 # InfluxDB 1.x Settings
-INFLUX_HOST = "192.168.0.3"
+INFLUX_HOST = "influxdb-ip-adress"
 INFLUX_PORT = 8086
-INFLUX_USER = "p1data"
-INFLUX_PASS = "p1data"
-INFLUX_DB   = "test"
+INFLUX_USER = "username"
+INFLUX_PASS = "password"
+INFLUX_DB   = "test-database"
 
 def fetch_and_write():
     print("--- STARTING SCRIPT ---")
