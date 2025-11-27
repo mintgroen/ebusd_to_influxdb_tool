@@ -2,7 +2,7 @@ import requests
 import json
 
 # Configuration
-url = "http://192.168.0.3:8889/data?maxage=60"
+url = "http://[ebusdeamon-ip-adress]:8889/data?maxage=60"
 output_file = "output.json"
 
 try:
