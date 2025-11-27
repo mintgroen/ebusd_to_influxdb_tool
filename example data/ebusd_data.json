@@ -1,0 +1,753 @@
+{
+    "hmu": {
+        "AirInletTemp": {
+            "temps2": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "AirIntakeTemp": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "BuildingCircuitFlow": {
+            "0": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "BuildingCircuitPumpPower": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "BuildingCircuitWaterPressure": {
+            "0": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "BuildingPumpHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "BuildingPumpStarts": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorBlocktime": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorCurrentLimit": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorHysteresisHc": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorModulation": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CompressorSilentOperationLevel": {
+            "percent0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "percent0"
+            }
+        },
+        "CompressorStarts": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "CondensateTrayHeater": {
+            "onoff": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "onoff"
+            }
+        },
+        "CoolingHours": {
+            "0": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "CurrentConsumedPower": {
+            "0": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "CurrentConsumedPowerWatt": {
+            "powerv": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "powerv"
+            }
+        },
+        "currenterror": {
+            "0": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "error"
+            },
+            "1": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "error_1"
+            },
+            "2": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "error_2"
+            },
+            "3": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "error_3"
+            },
+            "4": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "error_4"
+            }
+        },
+        "CurrentYieldPower": {
+            "0": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "DateTime": {
+            "dcfstate": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "dcfstate"
+            },
+            "btime": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "btime"
+            },
+            "bdate": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "bdate"
+            },
+            "temp2": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "temp2"
+            }
+        },
+        "EEVSteps": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "EnergyIntegral": {
+            "integral": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "integral"
+            }
+        },
+        "EnergyIntegralStartCooling": {
+            "integral": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "integral"
+            }
+        },
+        "EnergyIntegralStartHeating": {
+            "integral": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "integral"
+            }
+        },
+        "Fan1": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Fan1Hours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Fan1Starts": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Fan2": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Fan2Hours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Fan2Starts": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "FlowPressure": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "FlowTemp": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "FourPortValve": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "FourPortValveHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "FourPortValveSwitches": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "HcHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "HeatingCoilCompressor": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "HwcHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "HwcMode": {
+            "0": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "MA0output": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "MA1output": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "MA2output": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "MainsBlocktimeMaxDuration": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "MainsBlocktimeMinDuration": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "MI1input": {
+            "onoff": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "onoff"
+            }
+        },
+        "NoOfSwitchingOps": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "OutdoorTemp": {
+            "temps2": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "PositionEEV": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "ReturnTemp": {
+            "temps2": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "RunDataAirIntakeTemp": {
+            "tempv": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunDataBuildingPumpPower": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStats4PortValveHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStats4PortValveSwitches": {
+            "cntstarts2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsBuildingPumpHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsCompressorHc": {
+            "runtime": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "runtime"
+            },
+            "cycles": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "cycles"
+            }
+        },
+        "RunStatsCompressorHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsCompressorHwc": {
+            "runtime": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "runtime"
+            },
+            "cycles": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "cycles"
+            }
+        },
+        "RunStatsCompressorStarts": {
+            "cntstarts2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsFan1Hours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsFan1Starts": {
+            "cntstarts2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsFan2Hours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsFan2Starts": {
+            "cntstarts2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsHcHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsHMUHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "RunStatsHwcHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "SetMode": {
+            "hcmode": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "hcmode"
+            },
+            "flowtempdesired": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "flowtempdesired"
+            },
+            "hwctempdesired": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "hwctempdesired"
+            },
+            "hwcflowtempdesired": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "hwcflowtempdesired"
+            },
+            "disablehc": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "disablehc"
+            },
+            "disablehwctapping": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "disablehwctapping"
+            },
+            "disablehwcload": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "disablehwcload"
+            },
+            "remoteControlHcPump": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "remoteControlHcPump"
+            },
+            "releaseBackup": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "releaseBackup"
+            },
+            "releaseCooling": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "releaseCooling"
+            }
+        },
+        "SperContaktS20": {
+            "0": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "State00": {
+            "S00_SupplyTemp": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "S00_SupplyTemp"
+            },
+            "field2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "field2"
+            },
+            "S00_CompressorModulation": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "S00_CompressorModulation"
+            },
+            "CompressorState": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "CompressorState"
+            },
+            "HeatingState": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "HeatingState"
+            },
+            "field6": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "field6"
+            },
+            "Defrost": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "Defrost"
+            },
+            "S00_CompressorPower": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "S00_CompressorPower"
+            }
+        },
+        "State01": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "temp1"
+            },
+            "1": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "temp1_1"
+            },
+            "2": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "temp2"
+            },
+            "3": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "temp1_3"
+            },
+            "4": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "temp1_4"
+            },
+            "5": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "pumpstate"
+            }
+        },
+        "State07": {
+            "power": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "power"
+            },
+            "energy": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "energy"
+            },
+            "disp1ay_b0_heaterenabled": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "disp1ay_b0_heaterenabled"
+            },
+            "display_b1": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b1"
+            },
+            "display_b2_backupheater": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b2_backupheater"
+            },
+            "display_b3": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b3"
+            },
+            "display_b4": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b4"
+            },
+            "display_b5_noisereduction": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b5_noisereduction"
+            },
+            "display_b6_dhwecomode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b6_dhwecomode"
+            },
+            "display_b7": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "display_b7"
+            },
+            "DisplayHeaterMain": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "DisplayHeaterMain"
+            },
+            "DisplaySystemPressure": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "DisplaySystemPressure"
+            },
+            "DisplayHeaterBackup": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "DisplayHeaterBackup"
+            }
+        },
+        "StatusCirPump": {
+            "0": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Statuscode": {
+            "scode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "scode"
+            }
+        },
+        "SupplyTemp": {
+            "temps2": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "SystemTemp": {
+            "temps2": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "TotalHours": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "WaterThroughput": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        }
+    }
+}
