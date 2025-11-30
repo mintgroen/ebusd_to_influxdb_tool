@@ -17,13 +17,13 @@ else:
     exit(1)
 
 
-# Lijst met generieke namen die we liever niet als veldnaam gebruiken,
-# tenzij er echt niets anders is. Als een veld hierop uitkomt, gebruiken
-# we de naam van de Sensor (bv. "AirInletTemp") als veldnaam.
+# List of generic names we prefer not to use as field names,
+# unless there is really no other option. If a field resolves to one of these,
+# we use the name of the Sensor (e.g., "AirInletTemp") as the field name.
 GENERIC_KEYS = ["0", "value", "tempv", "temps2", "pressv", "cntstarts2"]
 
 def detect_type(value):
-    """Bepaalt of een waarde een int, float of str is."""
+    """Determines if a value is an int, float, or str."""
     if value is None:
         return "str"
     
@@ -65,7 +65,20 @@ def generate_schema():
             print(f"![ERROR] Could not fetch data from {data_url}: {e}")
             continue
 
-        # Stap 1: Loop door de root keys (zoals "hmu")
+        # Save the fetched data for debugging purposes
+        if data and isinstance(data, dict) and len(data.keys()) == 1:
+            root_key = list(data.keys())[0]
+            # Use the same directory as the main output file for consistency
+            output_dir = os.path.dirname(OUTPUT_FILE)
+            raw_output_file = os.path.join(output_dir, f"ebusd_{root_key}.json")
+            try:
+                with open(raw_output_file, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=4)
+                print(f"--- Saved raw data for '{root_key}' to '{raw_output_file}' ---")
+            except Exception as e:
+                print(f"![ERROR] Could not save raw data file for {root_key}: {e}")
+
+        # Step 1: Loop through the root keys (like "hmu")
         for root_key, root_data in data.items():
             if not isinstance(root_data, dict) or "messages" not in root_data:
                 continue
@@ -77,7 +90,7 @@ def generate_schema():
             if root_key not in merged_schema:
                 merged_schema[root_key] = {}
 
-            # Stap 2: Loop door de sensoren
+            # Step 2: Loop through the sensors
             for sensor_name, sensor_data in messages.items():
                 if not isinstance(sensor_data, dict):
                     continue
@@ -86,29 +99,29 @@ def generate_schema():
                 if not isinstance(inner_fields, dict):
                     continue
                 
-                # We houden bij welke namen we al gebruikt hebben binnen DEZE sensor
-                # om dubbele namen (collisions) te voorkomen.
+                # We keep track of which names we have already used within THIS sensor
+                # to prevent duplicate names (collisions).
                 used_field_names = []
 
-                # Stap 3: Loop door alle sub-fields
+                # Step 3: Loop through all sub-fields
                 for field_key, field_data in inner_fields.items():
                     
-                    # --- LOGICA VOOR NAAMBEPALING ---
-                    # 1. Start met de key zelf (bv. "0" of "S00_SupplyTemp")
+                    # --- LOGIC FOR NAME DETERMINATION ---
+                    # 1. Start with the key itself (e.g., "0" or "S00_SupplyTemp")
                     candidate_name = field_key
                     
-                    # 2. Kijk of er een interne "name" beschikbaar is (bv. "pumpstate" of "temp1")
+                    # 2. Check if an internal "name" is available (e.g., "pumpstate" or "temp1")
                     internal_name = field_data.get("name")
                     if internal_name and isinstance(internal_name, str) and internal_name.strip() != "":
                         candidate_name = internal_name
                     
-                    # 3. Filter generieke namen
+                    # 3. Filter generic names
                     if candidate_name in GENERIC_KEYS:
                         final_field_name = "value"
                     else:
                         final_field_name = candidate_name
 
-                    # 4. Uniek maken (Conflict Resolutie)
+                    # 4. Make unique (Conflict Resolution)
                     if final_field_name != "value":
                         original_name = final_field_name
                         counter = 1
@@ -120,11 +133,11 @@ def generate_schema():
                     
                     used_field_names.append(final_field_name)
                     
-                    # --- DATATYPE BEPALING ---
+                    # --- DATATYPE DETERMINATION ---
                     val = field_data.get("value")
                     detected_type = detect_type(val)
                     
-                    # Toevoegen aan Schema
+                    # Add to Schema
                     if sensor_name not in merged_schema[root_key]:
                         merged_schema[root_key][sensor_name] = {}
 
@@ -134,7 +147,7 @@ def generate_schema():
                         "influx_field_name": final_field_name
                     }
 
-    # Opslaan
+    # Save
     if merged_schema:
         try:
             os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
