@@ -1,10 +1,22 @@
 import requests
 import json
 import collections
+import os
 
 # --- Configuration ---
-DATA_URL = "http://192.168.0.3:8889/data/hmu?required"
-OUTPUT_FILE = "ebusd_data.json"
+CONFIG_FILE = "data/config.json"
+OUTPUT_FILE = "data/ebusd_data.json"
+
+# --- Load Configuration ---
+config = {}
+if os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE, 'r') as f:
+        config = json.load(f)
+
+# Get URL and Timeout from config
+DATA_URL = config["ebusd"]["schema_data_url"]
+ebusd_http_timeout = config["ebusd"]["ebusd_http_timeout"]
+
 
 # Lijst met generieke namen die we liever niet als veldnaam gebruiken,
 # tenzij er echt niets anders is. Als een veld hierop uitkomt, gebruiken
@@ -37,7 +49,7 @@ def generate_schema():
     print(f"--- GENERATING SCHEMA FROM {DATA_URL} ---")
     
     try:
-        response = requests.get(DATA_URL, timeout=10)
+        response = requests.get(DATA_URL, timeout=ebusd_http_timeout)
         response.raise_for_status()
         data = response.json()
     except Exception as e:
