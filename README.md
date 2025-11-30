@@ -1,6 +1,6 @@
 # ebusd_to_influsdb_tool
 
-A collection of Python scripts to extract data from an eBUS daemon, generate a schema, and push the data to an InfluxDB time-series database.
+A collection of Python scripts to extract data from an eBUS daemon, generate a schema, and push the data to an InfluxDB time-series database. the eBUs interface can be obtained from www.ebusd.eu and the deamon and required configuration file from https://github.com/john30/ebusd
 
 This is useful for logging, monitoring, visualizing and preparing the data for machine learning from your heating system or other eBUS-connected devices.
 
