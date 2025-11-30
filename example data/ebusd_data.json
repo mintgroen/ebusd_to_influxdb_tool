@@ -749,5 +749,300 @@
                 "influx_field_name": "value"
             }
         }
+    },
+    "basv": {
+        "ContinuosHeating": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "currenterror": {
+            "0": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "error"
+            },
+            "1": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "error_1"
+            },
+            "2": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "error_2"
+            },
+            "3": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "error_3"
+            },
+            "4": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "error_4"
+            }
+        },
+        "CylinderChargeHyst": {
+            "calibrationv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "calibrationv"
+            }
+        },
+        "CylinderChargeOffset": {
+            "calibrationv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "calibrationv"
+            }
+        },
+        "DisplayedOutsideTemp": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "FrostOverRideTime": {
+            "hoursum2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "hoursum2"
+            }
+        },
+        "GlobalSystemOff": {
+            "yesno": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "yesno"
+            }
+        },
+        "Hc1ActualFlowTempDesired": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1CircuitType": {
+            "mctype": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "mctype"
+            }
+        },
+        "Hc1FlowTemp": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1HeatCurve": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1HeatCurveAdaption": {
+            "0": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1MaxFlowTempDesired": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1MinCoolingFlowTempDesired": {
+            "tempv": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1MinFlowTempDesired": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1MixerMovement": {
+            "0": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1PumpStatus": {
+            "0": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1RoomTempSwitchOn": {
+            "rcmode": {
+                "type": "str",
+                "enabled": true,
+                "influx_field_name": "rcmode"
+            }
+        },
+        "Hc1Status": {
+            "0": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "Hc1SummerTempLimit": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "HwcFlowTemp": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "HwcMaxFlowTempDesired": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "HwcOpMode": {
+            "opmode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "opmode"
+            }
+        },
+        "HwcStorageTemp": {
+            "tempv": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "HwcTempDesired": {
+            "tempv": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "MultiRelaySetting": {
+            "mamode": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "mamode"
+            }
+        },
+        "OutsideTempAvg": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "PumpAdditionalTime": {
+            "minutes2": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "minutes2"
+            }
+        },
+        "WaterPressure": {
+            "pressv": {
+                "type": "float",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "z1ActualRoomTempDesired": {
+            "tempv": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "z1CoolingTemp": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "z1NightTemp": {
+            "tempv": {
+                "type": "int",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "z1OpMode": {
+            "opmode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "opmode"
+            }
+        },
+        "z1OpModeCooling": {
+            "opmode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "opmode"
+            }
+        },
+        "z1QuickVetoTemp": {
+            "tempv": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        },
+        "z1RoomTemp": {
+            "tempv": {
+                "type": "float",
+                "enabled": true,
+                "influx_field_name": "value"
+            }
+        },
+        "z1RoomZoneMapping": {
+            "zmapping": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "zmapping"
+            }
+        },
+        "z1SFMode": {
+            "sfmode": {
+                "type": "str",
+                "enabled": false,
+                "influx_field_name": "sfmode"
+            }
+        },
+        "z1ValveStatus": {
+            "0": {
+                "type": "int",
+                "enabled": false,
+                "influx_field_name": "value"
+            }
+        }
     }
 }

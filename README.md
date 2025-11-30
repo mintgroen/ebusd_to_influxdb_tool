@@ -8,25 +8,26 @@ This is useful for monitoring and visualizing data from your heating system or o
 
 The process is divided into three main steps:
 
-1.  **Generate a Schema:** The `Json_schema_generator.py` script connects to your eBUS daemon, fetches all available data points, and creates a schema file (`ebusd_data.json`). This schema defines which data points you want to monitor and how they should be structured.
-2.  **Fetch Data:** The `ebus_http_request_to_json.py` script is a simple utility to fetch the raw JSON data from the eBUS daemon and save it to a file (`output.json`). This is useful for debugging and inspecting the data.
-3.  **Push to InfluxDB:** The `request_json_output_to_influx.py` script is the main workhorse. It fetches the latest data from the eBUS daemon, filters and processes it according to the schema you generated, and writes the selected data points to your InfluxDB database.
+1.  **Generate a Schema:** The `json_schema_generator.py` script connects to one or more eBUS daemon URLs (defined in the config), fetches all available data points, and merges them to create a single schema file (`data/ebusd_data.json`). This schema defines which data points you want to monitor and how they should be structured.
+2.  **Fetch Data:** The `ebus_http_request_to_json.py` script is a utility to fetch raw JSON data from one or more eBUS daemon URLs. For each URL, it saves the output to a corresponding `data/ebusd_xxxx.json` file, where `xxxx` is the main root key of the JSON response. This is useful for debugging and inspecting the data.
+3.  **Push to InfluxDB:** The `request_json_output_to_influx.py` script is the main workhorse. It fetches the latest data from all configured eBUS daemon URLs, filters and processes the data according to the generated schema, and writes the selected data points to your InfluxDB database.
 
 ## Files
 
-*   `ebus_http_request_to_json.py`: Fetches raw JSON data from the eBUS daemon.
-*   `Json_schema_generator.py`: Generates a schema file from the eBUS data.
+*   `ebus_http_request_to_json.py`: Fetches raw JSON data from the eBUS daemon(s).
+*   `json_schema_generator.py`: Generates a schema file from the eBUS data.
 *   `request_json_output_to_influx.py`: Fetches, processes, and pushes data to InfluxDB.
-*   `config.json`: Configuration file for the InfluxDB script (eBUS URL and InfluxDB credentials).
-*   `ebusd_data.json`: The generated schema file (not included in the repository by default).
-*   `output.json`: Example raw JSON output from the eBUS daemon.
+*   `data/config.json`: The main configuration file. This is where you define eBUS URLs and InfluxDB credentials. **This file is not in the repository and must be created by you.**
+*   `example data/config.json.example`: An example configuration file. You should copy this to `data/config.json` and edit it.
+*   `data/ebusd_data.json`: The generated schema file (not included in the repository by default).
+*   `example data/`: This folder contains example files.
 
 ## Usage
 
 ### 1. Prerequisites
 
 *   Python 3
-*   The `requests` and `influxdb` Python libraries. You can install them using pip:
+*   The `requests` and `influxdb-python` Python libraries. You can install them using pip:
 
     ```bash
     pip install requests influxdb
@@ -37,31 +38,31 @@ The process is divided into three main steps:
 
 ### 2. Configuration
 
-1.  **Create the schema:**
-    *   Open `Json_schema_generator.py` and change the `DATA_URL` to the URL of your eBUS daemon's data endpoint (e.g., `http://<your-ebus-ip>:8889/data/hmu?required`).
-    *   Run the script:
+1.  **Create your configuration file:**
+    *   Copy `example data/config.json.example` to `data/config.json`.
+    *   Edit `data/config.json` with your specific settings.
+    *   You can define up to 4 URLs for fetching data and generating schemas (`schema_data_url_1` to `schema_data_url_4`, and `ebusd_url_1` to `ebusd_url_4`). The scripts will iterate through them and process any that are not empty.
+    *   Fill in the details for your InfluxDB instance (`host`, `port`, `user`, `pass`, `db`).
+
+2.  **Generate the schema:**
+    *   Once your `data/config.json` is configured with at least one `schema_data_url_n`, run the schema generator:
         ```bash
-        python Json_schema_generator.py
+        python json_schema_generator.py
         ```
-    *   This will create a `ebusd_data.json` file. You can edit this file to enable/disable specific sensors or change the field names.
+    *   This will create a `data/ebusd_data.json` file. You can edit this file to enable/disable specific sensors or change the field names that will be stored in InfluxDB.
 
-2.  **Configure the InfluxDB connection:**
-    *   Rename `config.json.example` to `config.json`.
-    *   Edit `config.json` and fill in the details for your eBUS daemon (`data_url`) and your InfluxDB instance (`host`, `port`, `user`, `pass`, `db`).
+### 3. Running the scripts
 
-### 3. Running the script
+*   To fetch data and store it in JSON files for debugging:
+    ```bash
+    python ebus_http_request_to_json.py
+    ```
+*   To start pushing data to InfluxDB (the main purpose of these tools):
+    ```bash
+    python request_json_output_to_influx.py
+    ```
 
-Once you have configured everything, you can run the main script to start pushing data to InfluxDB:
-
-```bash
-python request_json_output_to_influx.py
-```
-
-You can run this script periodically (e.g., using a cron job) to continuously monitor your eBUS data.
-
-## Example
-
-The `example data` folder contains an example of the raw JSON output from the eBUS daemon (`ebusd_data.json`) and the corresponding output file (`output.json`).
+You can run the `request_json_output_to_influx.py` script periodically (e.g., using a cron job) to continuously monitor your eBUS data.
 
 ## License
 

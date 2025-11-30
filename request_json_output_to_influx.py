@@ -74,15 +74,16 @@ def fetch_and_write():
 
         points_batch = []
 
-        # 5. Iterate strictly according to SCHEMA
-        logging.info("Processing data based on schema...")
-        for measure_name, sensors_config in schema.items():
-            
-            if measure_name not in data:
-                logging.warning(f"Measurement '{measure_name}' from schema not found in fetched data from {data_url}.")
+        # 5. Iterate based on keys in the fetched data
+        logging.info("Processing data...")
+        for measure_name, live_root in data.items():
+
+            if measure_name not in schema:
+                logging.warning(f"Measurement '{measure_name}' from fetched data not found in schema. Skipping.")
                 continue
 
-            live_root = data[measure_name]
+            sensors_config = schema[measure_name]
+
             if not isinstance(live_root, dict) or "messages" not in live_root:
                 logging.warning(f"Skipping '{measure_name}' in {data_url}: 'messages' key is missing or data is not a dictionary.")
                 continue
