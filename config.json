@@ -1,0 +1,10 @@
+{
+  "data_url": "http://127.0.0.1:8889/data/hmu?maxage=60",
+  "influxdb": {
+    "host": "localhost",
+    "port": 8086,
+    "user": "user",
+    "pass": "user",
+    "db": "home"
+  }
+}

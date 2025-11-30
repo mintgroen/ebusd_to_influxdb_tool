@@ -1,134 +1,168 @@
 import requests
 import datetime
+import json
+import os
+import logging
 from influxdb import InfluxDBClient
 
-# --- Configuration ---
-DATA_URL = "http://ebusdeamon-ip-adress:8889/data?maxage=60"
+# --- Setup Logging ---
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# InfluxDB 1.x Settings
-INFLUX_HOST = "influxdb-ip-adress"
-INFLUX_PORT = 8086
-INFLUX_USER = "username"
-INFLUX_PASS = "password"
-INFLUX_DB   = "test-database"
+# --- Configuration ---
+SCHEMA_CONFIG_FILE = "ebusd_data.json"
+APP_CONFIG_FILE = "config.json"
+
+def load_app_config():
+    if not os.path.exists(APP_CONFIG_FILE):
+        logging.error(f"Config file '{APP_CONFIG_FILE}' not found.")
+        return None
+    with open(APP_CONFIG_FILE, 'r') as f:
+        return json.load(f)
+
+def load_schema_config():
+    if not os.path.exists(SCHEMA_CONFIG_FILE):
+        logging.error(f"Schema file '{SCHEMA_CONFIG_FILE}' not found. Run the generator script first.")
+        return None
+    with open(SCHEMA_CONFIG_FILE, 'r') as f:
+        return json.load(f)
 
 def fetch_and_write():
-    print("--- STARTING SCRIPT ---")
-
-    # 1. Fetch JSON Data
-    print(f"\n[Step 1] Requesting data from: {DATA_URL}")
-    try:
-        response = requests.get(DATA_URL, timeout=60)
-        response.raise_for_status()
-        data = response.json()
-        print(f" -> JSON parsed successfully.")
-    except Exception as e:
-        print(f"![ERROR] Could not fetch data: {e}")
+    # 1. Load App Config
+    app_config = load_app_config()
+    if not app_config or "data_url" not in app_config or "influxdb" not in app_config:
+        logging.error("Failed to load app configuration or 'data_url' or 'influxdb' settings are missing.")
         return
 
-    # 2. Prepare InfluxDB Client
-    print(f"\n[Step 2] Connecting to InfluxDB at {INFLUX_HOST}:{INFLUX_PORT}")
-    client = InfluxDBClient(host=INFLUX_HOST, port=INFLUX_PORT, 
-                            username=INFLUX_USER, password=INFLUX_PASS, 
-                            database=INFLUX_DB)
+    DATA_URL = app_config["data_url"]
+    INFLUX_SETTINGS = app_config["influxdb"]
+    logging.info(f"Using data URL: {DATA_URL}")
+
+    # 2. Load Schema
+    schema = load_schema_config()
+    if not schema:
+        return
+
+    logging.info("--- STARTING FETCH ---")
+
+    # 3. Fetch Live Data
+    try:
+        logging.debug(f"Fetching data from {DATA_URL}")
+        response = requests.get(DATA_URL, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        logging.debug(f"Successfully fetched data: {json.dumps(data, indent=2)}")
+    except Exception as e:
+        logging.error(f"Data fetch failed: {e}")
+        return
+
+    # 4. Setup InfluxDB
+    try:
+        client = InfluxDBClient(host=INFLUX_SETTINGS['host'], port=INFLUX_SETTINGS['port'], 
+                                username=INFLUX_SETTINGS['user'], password=INFLUX_SETTINGS['pass'], 
+                                database=INFLUX_SETTINGS['db'])
+        logging.info(f"Connected to InfluxDB at {INFLUX_SETTINGS['host']}:{INFLUX_SETTINGS['port']}, database '{INFLUX_SETTINGS['db']}'")
+    except Exception as e:
+        logging.error(f"Failed to connect to InfluxDB: {e}")
+        return
     
-    # 3. Parse JSON and Aggregate
     points_batch = []
 
-    for measurement_name, measurement_data in data.items():
+    # 5. Iterate strictly according to SCHEMA
+    logging.info("Processing data based on schema...")
+    for measure_name, sensors_config in schema.items():
         
-        # Check if the root item is a dict and has "messages"
-        if not isinstance(measurement_data, dict) or "messages" not in measurement_data:
-            print(f" -> Skipping root key '{measurement_name}' (No 'messages' found).")
+        if measure_name not in data:
+            logging.warning(f"Measurement '{measure_name}' from schema not found in fetched data.")
             continue
 
-        print(f"\n[Step 3] Processing Root Key: '{measurement_name}'")
-        
-        messages = measurement_data["messages"]
-        
-        # --- FIX: Check if 'messages' is actually a dictionary ---
-        if not isinstance(messages, dict):
-            print(f" -> Skipping '{measurement_name}': 'messages' is not a dictionary (Type: {type(messages).__name__})")
+        live_root = data[measure_name]
+        if not isinstance(live_root, dict) or "messages" not in live_root:
+            logging.warning(f"Skipping '{measure_name}': 'messages' key is missing or data is not a dictionary.")
             continue
-        # ---------------------------------------------------------
-
+        
+        live_messages = live_root["messages"]
         collected_fields = {}
         timestamp_to_use = None
 
-        for sensor_name, sensor_data in messages.items():
+        for sensor_name, field_configs in sensors_config.items():
             
-            # --- FIX: Ensure sensor_data is a dictionary ---
-            # If 'sensor_data' is just a number (e.g. "count": 5), we can't look for .get("fields") inside it.
-            if not isinstance(sensor_data, dict):
-                 print(f"    [Skip] '{sensor_name}' is not a complex object (Type: {type(sensor_data).__name__})")
-                 continue
-            # -----------------------------------------------
-
-            # A. Capture Timestamp
-            if timestamp_to_use is None and "lastup" in sensor_data:
-                raw_time = sensor_data["lastup"]
-                try:
-                    timestamp_to_use = datetime.datetime.utcfromtimestamp(raw_time).strftime('%Y-%m-%dT%H:%M:%SZ')
-                    print(f"    [Timestamp] Locked in time: {timestamp_to_use}")
-                except (ValueError, TypeError):
-                    pass # unexpected timestamp format
-
-            # B. Capture Value (Smart Datatype Retention)
-            try:
-                inner_fields = sensor_data.get("fields", {})
-                
-                # Check if inner_fields is actually a dict
-                if inner_fields and isinstance(inner_fields, dict):
-                    first_inner_key = next(iter(inner_fields)) 
-                    # We also need to check if the inner item is a dict before calling .get()
-                    inner_obj = inner_fields[first_inner_key]
-                    
-                    if isinstance(inner_obj, dict):
-                        raw_val = inner_obj.get("value")
-                    
-                        if raw_val is not None:
-                            final_val = raw_val
-                            
-                            # Smart Type Detection
-                            if isinstance(raw_val, str):
-                                try:
-                                    final_val = int(raw_val)
-                                except ValueError:
-                                    try:
-                                        final_val = float(raw_val)
-                                    except ValueError:
-                                        final_val = raw_val
-
-                            collected_fields[sensor_name] = final_val
-                            print(f"    [Field] {sensor_name} = {final_val} (Type: {type(final_val).__name__})")
-
-            except Exception as e:
-                print(f"    [Error] Processing '{sensor_name}': {e}")
+            if sensor_name not in live_messages:
+                logging.debug(f"Sensor '{sensor_name}' not in live data for measurement '{measure_name}'.")
                 continue
 
-        # 4. Construct Point
+            sensor_data = live_messages[sensor_name]
+            logging.debug(f"Processing sensor: {sensor_name}")
+            
+            if timestamp_to_use is None and "lastup" in sensor_data:
+                try:
+                    ts_epoch = sensor_data["lastup"]
+                    ts = datetime.datetime.utcfromtimestamp(ts_epoch).strftime('%Y-%m-%dT%H:%M:%SZ')
+                    timestamp_to_use = ts
+                    logging.debug(f"Using timestamp {ts} from sensor '{sensor_name}'.")
+                except Exception as e:
+                    logging.warning(f"Could not parse timestamp from {sensor_data['lastup']}: {e}")
+
+            inner_fields_data = sensor_data.get("fields", {})
+            
+            for specific_field_key, rules in field_configs.items():
+                
+                if not rules.get("enabled", True):
+                    logging.debug(f"Skipping disabled field '{specific_field_key}' in sensor '{sensor_name}'.")
+                    continue
+                
+                if specific_field_key in inner_fields_data:
+                    
+                    data_obj = inner_fields_data[specific_field_key]
+                    raw_val = data_obj.get("value")
+
+                    if raw_val is None:
+                        logging.debug(f"Skipping field with null value: {specific_field_key}")
+                        continue
+
+                    influx_name = rules.get("influx_field_name", "value")
+                    
+                    if influx_name == "value":
+                        final_key_name = sensor_name
+                    else:
+                        final_key_name = influx_name
+
+                    target_type = rules.get("type", "str")
+                    final_val = raw_val
+
+                    try:
+                        if target_type == "int":
+                            final_val = int(float(raw_val))
+                        elif target_type == "float":
+                            final_val = float(raw_val)
+                        elif target_type == "str":
+                            final_val = str(raw_val)
+                    except (ValueError, TypeError) as e:
+                        logging.warning(f"Type conversion for '{final_key_name}' failed (value: {raw_val}): {e}. Storing as string.")
+                        final_val = str(raw_val)
+
+                    collected_fields[final_key_name] = final_val
+                    logging.debug(f"Collected field: '{final_key_name}' = {final_val} (Type: {target_type})")
+
         if collected_fields:
             point = {
-                "measurement": measurement_name,
+                "measurement": measure_name,
                 "fields": collected_fields
             }
             if timestamp_to_use:
                 point["time"] = timestamp_to_use
             
             points_batch.append(point)
+            logging.debug(f"Prepared point for batch: {json.dumps(point)}")
 
-    # 5. Write to DB
-    print("\n[Step 4] Writing batch to Database...")
+    # 6. Write to InfluxDB
     if points_batch:
         try:
             client.write_points(points_batch)
-            print(f" -> SUCCESS! Written {len(points_batch)} point(s).")
+            logging.info(f"Success: Wrote {len(points_batch)} records to InfluxDB.")
         except Exception as e:
-            print(f"![ERROR] InfluxDB Write Failed: {e}")
+            logging.error(f"InfluxDB write error: {e}")
     else:
-        print(" -> Nothing to write.")
-
-    print("\n--- SCRIPT FINISHED ---")
+        logging.info("No valid data points found to write.")
 
 if __name__ == "__main__":
     fetch_and_write()
