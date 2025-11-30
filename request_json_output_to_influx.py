@@ -126,16 +126,6 @@ def fetch_and_write():
                             logging.debug(f"Skipping field with null value: {specific_field_key}")
                             continue
 
-                        is_converted_boolean = False
-                        if isinstance(raw_val, str):
-                            val_lower = raw_val.lower()
-                            if val_lower in ("on", "yes", "active"):
-                                raw_val = 1
-                                is_converted_boolean = True
-                            elif val_lower in ("off", "no", "inactive"):
-                                raw_val = 0
-                                is_converted_boolean = True
-
                         influx_name = rules.get("influx_field_name", "value")
                         
                         if influx_name == "value":
@@ -147,9 +137,7 @@ def fetch_and_write():
                         final_val = raw_val
 
                         try:
-                            if is_converted_boolean:
-                                final_val = int(raw_val)
-                            elif target_type == "int":
+                            if target_type == "int":
                                 final_val = int(float(raw_val))
                             elif target_type == "float":
                                 final_val = float(raw_val)
