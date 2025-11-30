@@ -14,7 +14,7 @@ The process is divided into two main steps:
     *   It saves the raw, unprocessed JSON response to a corresponding `data/ebusd_xxxx.json` file, where `xxxx` is the main root key of the response. This is useful for debugging.
     *   It analyzes the data and merges the structures to create a single schema file (`data/ebusd_data.json`). This schema defines which data points you want to monitor.
 
-2.  **Push to InfluxDB:** The `request_json_output_to_influx.py` script is the main workhorse. It fetches the latest data from all configured eBUS daemon URLs, filters and processes the data according to the generated schema, and writes the selected data points to your InfluxDB database. During processing, it also automatically converts string values like "on", "off", "yes", and "no" to integer values 1 and 0, respectively.
+2.  **Push to InfluxDB:** The `request_json_output_to_influx.py` script is the main workhorse. It fetches the latest data from all configured eBUS daemon URLs, filters and processes the data according to the generated schema, and writes the selected data points to your InfluxDB database. During processing, it also automatically converts string values like "on", "off", "yes", "no", "active", and "inactive" to integer values 1 and 0, respectively.
 
 ## Files
 

@@ -128,9 +128,9 @@ def fetch_and_write():
 
                         if isinstance(raw_val, str):
                             val_lower = raw_val.lower()
-                            if val_lower in ("on", "yes"):
+                            if val_lower in ("on", "yes", "active"):
                                 raw_val = 1
-                            elif val_lower in ("off", "no"):
+                            elif val_lower in ("off", "no", "inactive"):
                                 raw_val = 0
 
                         influx_name = rules.get("influx_field_name", "value")
