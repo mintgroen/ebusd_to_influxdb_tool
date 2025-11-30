@@ -103,7 +103,7 @@ def fetch_and_write():
                 if timestamp_to_use is None and "lastup" in sensor_data:
                     try:
                         ts_epoch = sensor_data["lastup"]
-                        ts = datetime.datetime.utcfromtimestamp(ts_epoch).strftime('%Y-%m-%dT%H:%M:%SZ')
+                        ts = datetime.datetime.fromtimestamp(ts_epoch, datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
                         timestamp_to_use = ts
                         logging.debug(f"Using timestamp {ts} from sensor '{sensor_name}'.")
                     except Exception as e:
