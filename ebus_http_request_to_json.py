@@ -3,7 +3,7 @@ import json
 import os
 
 # --- Configuration ---
-CONFIG_FILE = "config.json"
+CONFIG_FILE = "data/config.json"
 OUTPUT_DIR = "data"
 
 # Create output directory if it doesn't exist

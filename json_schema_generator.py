@@ -4,7 +4,7 @@ import collections
 import os
 
 # --- Configuration ---
-CONFIG_FILE = "config.json"
+CONFIG_FILE = "data/config.json"
 OUTPUT_FILE = "data/ebusd_data.json"
 
 # --- Load Configuration ---

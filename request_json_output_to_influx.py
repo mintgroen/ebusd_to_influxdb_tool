@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # --- Configuration ---
 SCHEMA_CONFIG_FILE = "data/ebusd_data.json"
-APP_CONFIG_FILE = "config.json"
+APP_CONFIG_FILE = "data/config.json"
 
 def load_app_config():
     if not os.path.exists(APP_CONFIG_FILE):
