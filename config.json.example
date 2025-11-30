@@ -1,0 +1,10 @@
+{
+    "data_url": "http://192.168.0.3:8889/data?maxage=60",
+    "influxdb": {
+        "host": "localhost",
+        "port": 8086,
+        "user": "admin",
+        "pass": "password",
+        "db": "ebus"
+    }
+}
